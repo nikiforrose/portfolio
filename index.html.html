@@ -8,28 +8,23 @@
 <style>
   :root {
     --bg: #ffffff; --bg2: #f5f5f5; --text: #111111; --text2: #666666;
-    --border: #e0e0e0; --accent: #111111; --tag-bg: #f0f0f0;
-    --tag-text: #444444;
+    --border: #e0e0e0; --accent: #111111; --tag-bg: #f0f0f0; --tag-text: #444444;
   }
   .dark {
     --bg: #1c1c1e; --bg2: #2c2c2e; --text: #f2f2f7; --text2: #8e8e93;
-    --border: #3a3a3c; --accent: #f2f2f7; --tag-bg: #3a3a3c;
-    --tag-text: #ebebf5;
+    --border: #3a3a3c; --accent: #f2f2f7; --tag-bg: #3a3a3c; --tag-text: #ebebf5;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
   html, body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; line-height: 1.6; }
 
-  /* NAV */
   nav { position: sticky; top: 0; z-index: 100; background: var(--bg); border-bottom: 0.5px solid var(--border); display: flex; justify-content: center; padding: 0 16px; }
   nav button { background: none; border: none; cursor: pointer; color: var(--text2); font-size: 13px; font-weight: 500; padding: 14px 16px; letter-spacing: 0.02em; border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s; }
   nav button.active { color: var(--text); border-bottom-color: var(--accent); }
 
-  /* SECTIONS */
   section { display: none; padding: 32px 20px 60px; max-width: 640px; margin: 0 auto; }
   section.visible { display: block; }
-
-  /* ABOUT — без отступов сверху, видео на всю ширину */
   #about { padding: 0 0 60px; max-width: 100%; }
+
   .hero-wrap { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; }
   .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
   .about-inner { padding: 24px 20px 0; max-width: 640px; margin: 0 auto; }
@@ -37,31 +32,30 @@
   .role { font-size: 15px; color: var(--text2); margin-bottom: 20px; }
   .bio { font-size: 15px; color: var(--text2); line-height: 1.75; }
 
-  /* SKILLS */
   h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); margin-bottom: 16px; margin-top: 32px; }
   h2:first-child { margin-top: 0; }
   .tags { display: flex; flex-wrap: wrap; gap: 8px; }
   .tag { background: var(--tag-bg); color: var(--tag-text); font-size: 13px; padding: 6px 12px; border-radius: 20px; font-weight: 500; }
 
-  /* PROJECTS — вертикальные карточки */
-  .pb-card { border-radius: 14px; overflow: hidden; cursor: pointer; background: var(--bg2); border: 0.5px solid var(--border); position: relative; margin-bottom: 16px; }
+  /* PROJECTS */
+  .pb-list { position: relative; }
+  .pb-card { border-radius: 14px; overflow: hidden; cursor: pointer; background: var(--bg2); border: 0.5px solid var(--border); position: relative; margin-bottom: 16px; transition: transform 0.3s ease, opacity 0.3s ease; }
   .pb-card:last-child { margin-bottom: 0; }
+  .pb-list.has-active .pb-card { opacity: 0.4; }
+  .pb-list.has-active .pb-card.active { opacity: 1; transform: scale(1.02) translateY(-4px); z-index: 2; }
   .pb-cover { width: 100%; aspect-ratio: 16/7; display: flex; align-items: center; justify-content: center; position: relative; }
-  .pb-num { position: absolute; top: 12px; left: 14px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,0.25); letter-spacing: 0.04em; }
-  .pb-overlay { position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
-  .pb-card:hover .pb-overlay { opacity: 1; }
-  .pb-blur-1 { position: absolute; inset: 50% 0 0 0; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); mask-image: linear-gradient(to top, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%); }
-  .pb-blur-2 { position: absolute; inset: 25% 0 0 0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); mask-image: linear-gradient(to top, black 40%, transparent 100%); -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%); }
-  .pb-blur-3 { position: absolute; inset: 0; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); mask-image: linear-gradient(to top, black 20%, transparent 60%); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 60%); }
+  .pb-num { position: absolute; top: 12px; left: 14px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,0.25); letter-spacing: 0.04em; transition: opacity 0.3s; }
+  .pb-card.active .pb-num { opacity: 0; }
+  .pb-overlay { position: absolute; inset: 0; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); background: rgba(0,0,0,0); opacity: 0; transition: opacity 0.35s ease, backdrop-filter 0.35s ease, -webkit-backdrop-filter 0.35s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
+  .pb-card.active .pb-overlay { opacity: 1; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(0,0,0,0.1); }
   .pb-content { position: relative; z-index: 2; display: flex; flex-direction: column; }
   .pb-goto { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.95); color: #111; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 20px; border: none; cursor: pointer; margin-bottom: 10px; width: fit-content; transform: scale(0.85); opacity: 0; transition: transform 0.3s ease 0.05s, opacity 0.3s ease 0.05s; text-decoration: none; }
-  .pb-card:hover .pb-goto { transform: scale(1); opacity: 1; }
+  .pb-card.active .pb-goto { transform: scale(1); opacity: 1; }
   .pb-card-title { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; transform: translateY(6px); opacity: 0; transition: transform 0.3s ease 0.08s, opacity 0.3s ease 0.08s; }
-  .pb-card:hover .pb-card-title { transform: translateY(0); opacity: 1; }
-  .pb-card-desc { color: rgba(255,255,255,0.75); font-size: 13px; line-height: 1.5; transform: translateY(6px); opacity: 0; transition: transform 0.3s ease 0.12s, opacity 0.3s ease 0.12s; }
-  .pb-card:hover .pb-card-desc { transform: translateY(0); opacity: 1; }
+  .pb-card.active .pb-card-title { transform: translateY(0); opacity: 1; }
+  .pb-card-desc { color: rgba(255,255,255,0.9); font-size: 13px; line-height: 1.5; transform: translateY(6px); opacity: 0; transition: transform 0.3s ease 0.12s, opacity 0.3s ease 0.12s; }
+  .pb-card.active .pb-card-desc { transform: translateY(0); opacity: 1; }
 
-  /* CONTACTS */
   .contact-item { display: flex; align-items: center; gap: 14px; padding: 16px 0; border-bottom: 0.5px solid var(--border); cursor: pointer; text-decoration: none; color: inherit; }
   .contact-item:last-child { border-bottom: none; }
   .contact-icon { width: 40px; height: 40px; border-radius: 10px; background: var(--bg2); display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
@@ -81,7 +75,6 @@
 
 <!-- ABOUT -->
 <section id="about" class="visible">
-  <!-- ВИДЕО: замени src на ссылку с Cloudinary -->
   <div class="hero-wrap">
     <video class="hero-video" autoplay muted loop playsinline>
       <source src="ВСТАВЬ_ССЫЛКУ_CLOUDINARY.mp4" type="video/mp4" />
@@ -92,9 +85,7 @@
     <p class="role">Frontend Developer · UI/UX</p>
     <p class="bio">Разрабатываю веб-приложения и интерфейсы с фокусом на производительность и пользовательский опыт. Люблю сложные задачи и чистый код.</p>
     <h2 style="margin-top: 28px;">Опыт</h2>
-    <p style="font-size: 14px; color: var(--text2); line-height: 1.75;">
-      3+ года коммерческой разработки. Работал с продуктовыми командами от стартапов до компаний со 100+ сотрудниками.
-    </p>
+    <p style="font-size: 14px; color: var(--text2); line-height: 1.75;">3+ года коммерческой разработки. Работал с продуктовыми командами от стартапов до компаний со 100+ сотрудниками.</p>
   </div>
 </section>
 
@@ -122,92 +113,79 @@
 
 <!-- PROJECTS -->
 <section id="projects">
+  <div class="pb-list" id="pbList">
 
-  <div class="pb-card">
-    <div class="pb-cover" style="background:#E6F1FB;">
-      <span class="pb-num">01</span>
-      <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="6" y="12" width="44" height="32" rx="5" stroke="#185FA5" stroke-width="2"/><path d="M14 28h28M14 21h18M14 35h12" stroke="#185FA5" stroke-width="2" stroke-linecap="round"/></svg>
-    </div>
-    <div class="pb-overlay">
-      <div class="pb-blur-1"></div>
-      <div class="pb-blur-2"></div>
-      <div class="pb-blur-3"></div>
-      <div class="pb-content">
-        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-        <div class="pb-card-title">Finance Tracker</div>
-        <div class="pb-card-desc">Учёт расходов с аналитикой и графиками</div>
+    <div class="pb-card">
+      <div class="pb-cover" style="background:#E6F1FB;">
+        <span class="pb-num">01</span>
+        <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="6" y="12" width="44" height="32" rx="5" stroke="#185FA5" stroke-width="2"/><path d="M14 28h28M14 21h18M14 35h12" stroke="#185FA5" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="pb-overlay">
+        <div class="pb-content">
+          <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+          <div class="pb-card-title">Finance Tracker</div>
+          <div class="pb-card-desc">Учёт расходов с аналитикой и графиками</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="pb-card">
-    <div class="pb-cover" style="background:#EAF3DE;">
-      <span class="pb-num">02</span>
-      <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="8" y="8" width="40" height="40" rx="20" stroke="#3B6D11" stroke-width="2"/><path d="M18 28l7 7 13-14" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </div>
-    <div class="pb-overlay">
-      <div class="pb-blur-1"></div>
-      <div class="pb-blur-2"></div>
-      <div class="pb-blur-3"></div>
-      <div class="pb-content">
-        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-        <div class="pb-card-title">Task Manager Bot</div>
-        <div class="pb-card-desc">Mini App для задач и напоминаний в команде</div>
+    <div class="pb-card">
+      <div class="pb-cover" style="background:#EAF3DE;">
+        <span class="pb-num">02</span>
+        <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="8" y="8" width="40" height="40" rx="20" stroke="#3B6D11" stroke-width="2"/><path d="M18 28l7 7 13-14" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="pb-overlay">
+        <div class="pb-content">
+          <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+          <div class="pb-card-title">Task Manager Bot</div>
+          <div class="pb-card-desc">Mini App для задач и напоминаний в команде</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="pb-card">
-    <div class="pb-cover" style="background:#EEEDFE;">
-      <span class="pb-num">03</span>
-      <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="20" r="9" stroke="#534AB7" stroke-width="2"/><path d="M12 44c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#534AB7" stroke-width="2" stroke-linecap="round"/></svg>
-    </div>
-    <div class="pb-overlay">
-      <div class="pb-blur-1"></div>
-      <div class="pb-blur-2"></div>
-      <div class="pb-blur-3"></div>
-      <div class="pb-content">
-        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-        <div class="pb-card-title">Design System</div>
-        <div class="pb-card-desc">UI-библиотека с документацией и токенами</div>
+    <div class="pb-card">
+      <div class="pb-cover" style="background:#EEEDFE;">
+        <span class="pb-num">03</span>
+        <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="20" r="9" stroke="#534AB7" stroke-width="2"/><path d="M12 44c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#534AB7" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="pb-overlay">
+        <div class="pb-content">
+          <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+          <div class="pb-card-title">Design System</div>
+          <div class="pb-card-desc">UI-библиотека с документацией и токенами</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="pb-card">
-    <div class="pb-cover" style="background:#FAECE7;">
-      <span class="pb-num">04</span>
-      <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M12 44V30M21 44V18M30 44V24M39 44V12" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/></svg>
-    </div>
-    <div class="pb-overlay">
-      <div class="pb-blur-1"></div>
-      <div class="pb-blur-2"></div>
-      <div class="pb-blur-3"></div>
-      <div class="pb-content">
-        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-        <div class="pb-card-title">Analytics Dashboard</div>
-        <div class="pb-card-desc">Дашборд с графиками и экспортом данных</div>
+    <div class="pb-card">
+      <div class="pb-cover" style="background:#FAECE7;">
+        <span class="pb-num">04</span>
+        <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M12 44V30M21 44V18M30 44V24M39 44V12" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/></svg>
+      </div>
+      <div class="pb-overlay">
+        <div class="pb-content">
+          <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+          <div class="pb-card-title">Analytics Dashboard</div>
+          <div class="pb-card-desc">Дашборд с графиками и экспортом данных</div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="pb-card">
-    <div class="pb-cover" style="background:#E1F5EE;">
-      <span class="pb-num">05</span>
-      <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M28 12v8M28 36v8M12 28h8M36 28h8" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="28" r="9" stroke="#0F6E56" stroke-width="2"/></svg>
-    </div>
-    <div class="pb-overlay">
-      <div class="pb-blur-1"></div>
-      <div class="pb-blur-2"></div>
-      <div class="pb-blur-3"></div>
-      <div class="pb-content">
-        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-        <div class="pb-card-title">API Gateway</div>
-        <div class="pb-card-desc">Шлюз с авторизацией и кешированием Redis</div>
+    <div class="pb-card">
+      <div class="pb-cover" style="background:#E1F5EE;">
+        <span class="pb-num">05</span>
+        <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M28 12v8M28 36v8M12 28h8M36 28h8" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="28" r="9" stroke="#0F6E56" stroke-width="2"/></svg>
+      </div>
+      <div class="pb-overlay">
+        <div class="pb-content">
+          <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+          <div class="pb-card-title">API Gateway</div>
+          <div class="pb-card-desc">Шлюз с авторизацией и кешированием Redis</div>
+        </div>
       </div>
     </div>
-  </div>
 
+  </div>
 </section>
 
 <!-- CONTACTS -->
@@ -256,6 +234,44 @@
     if (tg && tg.openLink) tg.openLink(url);
     else window.open(url, '_blank');
   }
+
+  (function() {
+    const list = document.getElementById('pbList');
+    if (!list) return;
+    const getCards = () => list.querySelectorAll('.pb-card');
+
+    function activate(card) {
+      list.classList.add('has-active');
+      getCards().forEach(c => c.classList.remove('active'));
+      card.classList.add('active');
+    }
+    function deactivate() {
+      list.classList.remove('has-active');
+      getCards().forEach(c => c.classList.remove('active'));
+    }
+
+    getCards().forEach(card => {
+      card.addEventListener('mouseenter', () => activate(card));
+      card.addEventListener('mouseleave', () => deactivate());
+
+      card.addEventListener('touchend', function(e) {
+        const link = e.target.closest('.pb-goto');
+        if (link) {
+          e.preventDefault();
+          openLink(link.href);
+          return;
+        }
+        if (!card.classList.contains('active')) {
+          e.preventDefault();
+          activate(card);
+        }
+      });
+    });
+
+    document.addEventListener('touchend', function(e) {
+      if (!e.target.closest('.pb-card')) deactivate();
+    });
+  })();
 </script>
 </body>
 </html>
