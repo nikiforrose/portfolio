@@ -30,7 +30,8 @@
 
   /* ABOUT — без отступов сверху, видео на всю ширину */
   #about { padding: 0 0 60px; max-width: 100%; }
-  .hero-video { width: 100%; display: block; aspect-ratio: 16/9; object-fit: cover; }
+  .hero-wrap { width: 100%; aspect-ratio: 16/9; position: relative; overflow: hidden; }
+  .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; display: block; object-fit: cover; }
   .about-inner { padding: 24px 20px 0; max-width: 640px; margin: 0 auto; }
   h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
   .role { font-size: 15px; color: var(--text2); margin-bottom: 20px; }
@@ -47,8 +48,12 @@
   .pb-card:last-child { margin-bottom: 0; }
   .pb-cover { width: 100%; aspect-ratio: 16/7; display: flex; align-items: center; justify-content: center; position: relative; }
   .pb-num { position: absolute; top: 12px; left: 14px; font-size: 11px; font-weight: 600; color: rgba(0,0,0,0.25); letter-spacing: 0.04em; }
-  .pb-overlay { position: absolute; inset: 0; backdrop-filter: blur(0px); -webkit-backdrop-filter: blur(0px); background: rgba(0,0,0,0); opacity: 0; transition: opacity 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
-  .pb-card:hover .pb-overlay { opacity: 1; backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); background: rgba(0,0,0,0.1); }
+  .pb-overlay { position: absolute; inset: 0; opacity: 0; transition: opacity 0.35s ease; display: flex; flex-direction: column; justify-content: flex-end; padding: 18px; }
+  .pb-card:hover .pb-overlay { opacity: 1; }
+  .pb-blur-1 { position: absolute; inset: 50% 0 0 0; backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); mask-image: linear-gradient(to top, black 60%, transparent 100%); -webkit-mask-image: linear-gradient(to top, black 60%, transparent 100%); }
+  .pb-blur-2 { position: absolute; inset: 25% 0 0 0; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); mask-image: linear-gradient(to top, black 40%, transparent 100%); -webkit-mask-image: linear-gradient(to top, black 40%, transparent 100%); }
+  .pb-blur-3 { position: absolute; inset: 0; backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px); mask-image: linear-gradient(to top, black 20%, transparent 60%); -webkit-mask-image: linear-gradient(to top, black 20%, transparent 60%); }
+  .pb-content { position: relative; z-index: 2; display: flex; flex-direction: column; }
   .pb-goto { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.95); color: #111; font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 20px; border: none; cursor: pointer; margin-bottom: 10px; width: fit-content; transform: scale(0.85); opacity: 0; transition: transform 0.3s ease 0.05s, opacity 0.3s ease 0.05s; text-decoration: none; }
   .pb-card:hover .pb-goto { transform: scale(1); opacity: 1; }
   .pb-card-title { color: #fff; font-size: 16px; font-weight: 600; margin-bottom: 4px; line-height: 1.3; transform: translateY(6px); opacity: 0; transition: transform 0.3s ease 0.08s, opacity 0.3s ease 0.08s; }
@@ -77,9 +82,11 @@
 <!-- ABOUT -->
 <section id="about" class="visible">
   <!-- ВИДЕО: замени src на ссылку с Cloudinary -->
-  <video class="hero-video" autoplay muted loop playsinline poster="">
-    <source src="https://res.cloudinary.com/ddkwjxz6c/video/upload/v1773880627/Comp_1_vhr0le.mp4" type="video/mp4" />
-  </video>
+  <div class="hero-wrap">
+    <video class="hero-video" autoplay muted loop playsinline>
+      <source src="https://res.cloudinary.com/ddkwjxz6c/video/upload/v1773880627/Comp_1_vhr0le.mp4" type="video/mp4" />
+    </video>
+  </div>
   <div class="about-inner">
     <h1>Иван Иванов</h1>
     <p class="role">Frontend Developer · UI/UX</p>
@@ -122,9 +129,14 @@
       <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="6" y="12" width="44" height="32" rx="5" stroke="#185FA5" stroke-width="2"/><path d="M14 28h28M14 21h18M14 35h12" stroke="#185FA5" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
     <div class="pb-overlay">
-      <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-      <div class="pb-card-title">Finance Tracker</div>
-      <div class="pb-card-desc">Учёт расходов с аналитикой и графиками</div>
+      <div class="pb-blur-1"></div>
+      <div class="pb-blur-2"></div>
+      <div class="pb-blur-3"></div>
+      <div class="pb-content">
+        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+        <div class="pb-card-title">Finance Tracker</div>
+        <div class="pb-card-desc">Учёт расходов с аналитикой и графиками</div>
+      </div>
     </div>
   </div>
 
@@ -134,9 +146,14 @@
       <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><rect x="8" y="8" width="40" height="40" rx="20" stroke="#3B6D11" stroke-width="2"/><path d="M18 28l7 7 13-14" stroke="#3B6D11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </div>
     <div class="pb-overlay">
-      <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-      <div class="pb-card-title">Task Manager Bot</div>
-      <div class="pb-card-desc">Mini App для задач и напоминаний в команде</div>
+      <div class="pb-blur-1"></div>
+      <div class="pb-blur-2"></div>
+      <div class="pb-blur-3"></div>
+      <div class="pb-content">
+        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+        <div class="pb-card-title">Task Manager Bot</div>
+        <div class="pb-card-desc">Mini App для задач и напоминаний в команде</div>
+      </div>
     </div>
   </div>
 
@@ -146,9 +163,14 @@
       <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><circle cx="28" cy="20" r="9" stroke="#534AB7" stroke-width="2"/><path d="M12 44c0-8.837 7.163-16 16-16s16 7.163 16 16" stroke="#534AB7" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
     <div class="pb-overlay">
-      <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-      <div class="pb-card-title">Design System</div>
-      <div class="pb-card-desc">UI-библиотека с документацией и токенами</div>
+      <div class="pb-blur-1"></div>
+      <div class="pb-blur-2"></div>
+      <div class="pb-blur-3"></div>
+      <div class="pb-content">
+        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+        <div class="pb-card-title">Design System</div>
+        <div class="pb-card-desc">UI-библиотека с документацией и токенами</div>
+      </div>
     </div>
   </div>
 
@@ -158,9 +180,14 @@
       <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M12 44V30M21 44V18M30 44V24M39 44V12" stroke="#993C1D" stroke-width="2" stroke-linecap="round"/></svg>
     </div>
     <div class="pb-overlay">
-      <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-      <div class="pb-card-title">Analytics Dashboard</div>
-      <div class="pb-card-desc">Дашборд с графиками и экспортом данных</div>
+      <div class="pb-blur-1"></div>
+      <div class="pb-blur-2"></div>
+      <div class="pb-blur-3"></div>
+      <div class="pb-content">
+        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+        <div class="pb-card-title">Analytics Dashboard</div>
+        <div class="pb-card-desc">Дашборд с графиками и экспортом данных</div>
+      </div>
     </div>
   </div>
 
@@ -170,9 +197,14 @@
       <svg width="64" height="64" viewBox="0 0 56 56" fill="none"><path d="M28 12v8M28 36v8M12 28h8M36 28h8" stroke="#0F6E56" stroke-width="2" stroke-linecap="round"/><circle cx="28" cy="28" r="9" stroke="#0F6E56" stroke-width="2"/></svg>
     </div>
     <div class="pb-overlay">
-      <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
-      <div class="pb-card-title">API Gateway</div>
-      <div class="pb-card-desc">Шлюз с авторизацией и кешированием Redis</div>
+      <div class="pb-blur-1"></div>
+      <div class="pb-blur-2"></div>
+      <div class="pb-blur-3"></div>
+      <div class="pb-content">
+        <a class="pb-goto" href="https://github.com" onclick="openLink(this.href); return false;">Перейти &#8594;</a>
+        <div class="pb-card-title">API Gateway</div>
+        <div class="pb-card-desc">Шлюз с авторизацией и кешированием Redis</div>
+      </div>
     </div>
   </div>
 
@@ -207,9 +239,6 @@
   if (tg) {
     tg.ready();
     tg.expand();
-    if (tg.requestFullscreen) tg.requestFullscreen();
-    tg.disableVerticalSwipes();
-    if (tg.lockOrientation) tg.lockOrientation();
     if (tg.colorScheme === 'dark') document.body.classList.add('dark');
     tg.onEvent('themeChanged', () => {
       document.body.classList.toggle('dark', tg.colorScheme === 'dark');
