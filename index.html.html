@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>Portfolio</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root {
+    --bg: #ffffff;
+    --bg2: #f5f5f5;
+    --text: #111111;
+    --text2: #666666;
+    --border: #e0e0e0;
+    --accent: #111111;
+    --tag-bg: #f0f0f0;
+    --tag-text: #444444;
+    --card-bg: #ffffff;
+  }
+  .dark {
+    --bg: #1c1c1e;
+    --bg2: #2c2c2e;
+    --text: #f2f2f7;
+    --text2: #8e8e93;
+    --border: #3a3a3c;
+    --accent: #f2f2f7;
+    --tag-bg: #3a3a3c;
+    --tag-text: #ebebf5;
+    --card-bg: #2c2c2e;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--text); font-family: -apple-system, 'SF Pro Text', system-ui, sans-serif; font-size: 16px; line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--bg);
+    border-bottom: 0.5px solid var(--border);
+    display: flex; justify-content: center; gap: 0;
+    padding: 0 16px;
+  }
+  nav button {
+    background: none; border: none; cursor: pointer;
+    color: var(--text2); font-size: 13px; font-weight: 500;
+    padding: 14px 16px; letter-spacing: 0.02em;
+    border-bottom: 2px solid transparent; transition: color 0.2s, border-color 0.2s;
+  }
+  nav button.active { color: var(--text); border-bottom-color: var(--accent); }
+
+  /* SECTIONS */
+  section { display: none; padding: 32px 20px 60px; max-width: 640px; margin: 0 auto; }
+  section.visible { display: block; }
+
+  /* ABOUT */
+  .avatar {
+    width: 72px; height: 72px; border-radius: 50%;
+    background: var(--bg2); border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 28px; margin-bottom: 20px;
+  }
+  h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.02em; margin-bottom: 6px; }
+  .role { font-size: 15px; color: var(--text2); margin-bottom: 20px; }
+  .bio { font-size: 15px; color: var(--text2); line-height: 1.75; }
+
+  /* SKILLS */
+  h2 { font-size: 13px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text2); margin-bottom: 16px; margin-top: 32px; }
+  h2:first-child { margin-top: 0; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tag {
+    background: var(--tag-bg); color: var(--tag-text);
+    font-size: 13px; padding: 6px 12px; border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* PROJECTS */
+  .project-card {
+    background: var(--card-bg);
+    border: 0.5px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 12px;
+    transition: border-color 0.2s;
+  }
+  .project-card:active { border-color: var(--text2); }
+  .project-title { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+  .project-desc { font-size: 14px; color: var(--text2); line-height: 1.6; margin-bottom: 12px; }
+  .project-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .project-tags .tag { font-size: 12px; padding: 4px 10px; }
+  .project-link {
+    display: inline-block; margin-top: 12px;
+    font-size: 13px; color: var(--text); font-weight: 500;
+    text-decoration: none; border-bottom: 0.5px solid var(--border);
+    padding-bottom: 1px;
+  }
+
+  /* CONTACTS */
+  .contact-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 16px 0;
+    border-bottom: 0.5px solid var(--border);
+    cursor: pointer; text-decoration: none; color: inherit;
+  }
+  .contact-item:last-child { border-bottom: none; }
+  .contact-icon {
+    width: 40px; height: 40px; border-radius: 10px;
+    background: var(--bg2); display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .contact-label { font-size: 13px; color: var(--text2); margin-bottom: 2px; }
+  .contact-value { font-size: 15px; font-weight: 500; }
+  .contact-arrow { margin-left: auto; color: var(--text2); font-size: 18px; }
+
+  /* DIVIDER */
+  .divider { height: 0.5px; background: var(--border); margin: 0 -20px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <button class="active" onclick="show('about', this)">Обо мне</button>
+  <button onclick="show('skills', this)">Навыки</button>
+  <button onclick="show('projects', this)">Проекты</button>
+  <button onclick="show('contacts', this)">Контакты</button>
+</nav>
+
+<!-- ABOUT -->
+<section id="about" class="visible">
+  <div class="avatar">👤</div>
+  <h1>Иван Иванов</h1>
+  <p class="role">Frontend Developer · UI/UX</p>
+  <p class="bio">
+    Разрабатываю веб-приложения и интерфейсы с фокусом на производительность
+    и пользовательский опыт. Люблю сложные задачи и чистый код.
+  </p>
+  <h2 style="margin-top: 28px;">Опыт</h2>
+  <p style="font-size: 14px; color: var(--text2); line-height: 1.75;">
+    3+ года коммерческой разработки. Работал с продуктовыми командами от стартапов
+    до компаний со 100+ сотрудниками.
+  </p>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <h2>Frontend</h2>
+  <div class="tags">
+    <span class="tag">React</span>
+    <span class="tag">TypeScript</span>
+    <span class="tag">Next.js</span>
+    <span class="tag">Vite</span>
+    <span class="tag">CSS / Tailwind</span>
+    <span class="tag">Zustand</span>
+  </div>
+
+  <h2>Backend</h2>
+  <div class="tags">
+    <span class="tag">Node.js</span>
+    <span class="tag">Express</span>
+    <span class="tag">PostgreSQL</span>
+    <span class="tag">Redis</span>
+    <span class="tag">REST API</span>
+  </div>
+
+  <h2>Инструменты</h2>
+  <div class="tags">
+    <span class="tag">Figma</span>
+    <span class="tag">Git</span>
+    <span class="tag">Docker</span>
+    <span class="tag">Telegram Mini Apps</span>
+    <span class="tag">Vercel</span>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="project-card">
+    <p class="project-title">Finance Tracker</p>
+    <p class="project-desc">Веб-приложение для учёта личных финансов с аналитикой и категориями расходов.</p>
+    <div class="project-tags">
+      <span class="tag">React</span>
+      <span class="tag">TypeScript</span>
+      <span class="tag">PostgreSQL</span>
+    </div>
+    <a class="project-link" href="https://github.com" onclick="openLink(this.href); return false;">Смотреть →</a>
+  </div>
+
+  <div class="project-card">
+    <p class="project-title">Task Manager Bot</p>
+    <p class="project-desc">Telegram Mini App для управления задачами с напоминаниями и командной работой.</p>
+    <div class="project-tags">
+      <span class="tag">Telegram Mini Apps</span>
+      <span class="tag">Node.js</span>
+      <span class="tag">Redis</span>
+    </div>
+    <a class="project-link" href="https://github.com" onclick="openLink(this.href); return false;">Смотреть →</a>
+  </div>
+
+  <div class="project-card">
+    <p class="project-title">Design System</p>
+    <p class="project-desc">Библиотека UI-компонентов на основе токенов с автоматической генерацией документации.</p>
+    <div class="project-tags">
+      <span class="tag">React</span>
+      <span class="tag">Storybook</span>
+      <span class="tag">Figma</span>
+    </div>
+    <a class="project-link" href="https://github.com" onclick="openLink(this.href); return false;">Смотреть →</a>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section id="contacts">
+  <a class="contact-item" href="https://t.me/username" onclick="openLink(this.href); return false;">
+    <div class="contact-icon">✈️</div>
+    <div>
+      <p class="contact-label">Telegram</p>
+      <p class="contact-value">@username</p>
+    </div>
+    <span class="contact-arrow">›</span>
+  </a>
+  <a class="contact-item" href="mailto:hello@example.com" onclick="openLink(this.href); return false;">
+    <div class="contact-icon">✉️</div>
+    <div>
+      <p class="contact-label">Email</p>
+      <p class="contact-value">hello@example.com</p>
+    </div>
+    <span class="contact-arrow">›</span>
+  </a>
+  <a class="contact-item" href="https://github.com/username" onclick="openLink(this.href); return false;">
+    <div class="contact-icon">⌨️</div>
+    <div>
+      <p class="contact-label">GitHub</p>
+      <p class="contact-value">github.com/username</p>
+    </div>
+    <span class="contact-arrow">›</span>
+  </a>
+  <a class="contact-item" href="https://linkedin.com/in/username" onclick="openLink(this.href); return false;">
+    <div class="contact-icon">💼</div>
+    <div>
+      <p class="contact-label">LinkedIn</p>
+      <p class="contact-value">linkedin.com/in/username</p>
+    </div>
+    <span class="contact-arrow">›</span>
+  </a>
+</section>
+
+<script>
+  const tg = window.Telegram && window.Telegram.WebApp;
+  if (tg) {
+    tg.ready();
+    tg.expand();
+    if (tg.colorScheme === 'dark') document.body.classList.add('dark');
+    tg.onEvent('themeChanged', () => {
+      document.body.classList.toggle('dark', tg.colorScheme === 'dark');
+    });
+  }
+
+  function show(id, btn) {
+    document.querySelectorAll('section').forEach(s => s.classList.remove('visible'));
+    document.querySelectorAll('nav button').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('visible');
+    btn.classList.add('active');
+  }
+
+  function openLink(url) {
+    if (tg && tg.openLink) tg.openLink(url);
+    else window.open(url, '_blank');
+  }
+</script>
+</body>
+</html>
